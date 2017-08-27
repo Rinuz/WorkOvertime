@@ -1,4 +1,4 @@
-package pl.kozdrun.worktime;
+package pl.com.worktime;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

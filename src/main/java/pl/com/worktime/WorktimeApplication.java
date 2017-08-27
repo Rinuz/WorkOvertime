@@ -1,4 +1,4 @@
-package pl.kozdrun.worktime;
+package pl.com.worktime;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;

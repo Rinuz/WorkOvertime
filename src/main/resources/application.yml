@@ -1,0 +1,21 @@
+spring:
+    application:
+        name: WorktimeApp
+    profiles:
+        # The commented value for `active` can be replaced with valid spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: #spring.profiles.active#
+    datasource:
+        url: jdbc:postgresql://localhost:5432/worktime
+        username: postgres
+        password: admin
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            #ddl-auto: create-drop
+            ddl-auto: validate
+#    flyway:
+#        url: jdbc:postgresql://localhost:5432/worktime
+#        username: postgres
+#        password: admin
