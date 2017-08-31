@@ -1,0 +1,50 @@
+@import "../valo/valo.scss";
+
+/* Make Valo theme changes here */
+
+@mixin mytheme {
+    @include valo;
+
+    .v-panel {
+        border: none;
+    }
+
+    .header-background {
+        background-color: #f5f5f5;
+    }
+
+    .content-background {
+            background-color: #ffffff;
+        }
+
+    .menu-background {
+        background-color: #2f4050;
+    }
+
+    .menu-button {
+        background-image: none;
+        border: none;
+        border-bottom: 1px solid grey;
+        box-shadow: none;
+        border-radius: 0px;
+        padding-left: 30px;
+        padding-bottom: 10px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .menu-button-inactive {
+        background-color: #2f4050;
+        color: #ffffff;
+    }
+
+    .menu-button-active {
+        background-color: #ffffff;
+        color: #2f4050;
+    }
+
+    .menu-tite {
+        border-bottom: 1px solid grey;
+    }
+
+}
