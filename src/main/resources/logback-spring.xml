@@ -51,6 +51,9 @@
     <logger name="liquibase" level="WARN"/>
     <logger name="sun.rmi.transport" level="WARN"/>
     <logger name="com.vaadin.spring" level="WARN"/>
+    <logger name="com.vaadin.ui" level="INFO"/>
+    <logger name="com.vaadin.server" level="INFO"/>
+    <logger name="org.postgresql" level="INFO"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>

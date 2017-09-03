@@ -5,19 +5,18 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.UI;
-import pl.com.worktime.web.main.ApplicationLayout;
-import pl.com.worktime.web.main.ContentPanel;
-import pl.com.worktime.web.main.HeaderPanel;
-import pl.com.worktime.web.main.MenuPanel;
+import pl.com.worktime.web.view.main.ApplicationLayout;
+import pl.com.worktime.web.view.main.ContentPanel;
+import pl.com.worktime.web.view.main.HeaderPanel;
+import pl.com.worktime.web.view.main.MenuPanel;
+import pl.com.worktime.web.view.TimesheetView;
 
-/**
- * Radosław Kozdruń
- * 27.08.2017
- */
 @Theme("mytheme")
 @SpringUI(path = "worktime")
-public class ApplicationUI extends UI implements ViewDisplay {
+@SpringViewDisplay
+public class WorktimeUI extends UI implements ViewDisplay {
 
     private MenuPanel menuPanel;
     private HeaderPanel headerPanel;
@@ -39,6 +38,8 @@ public class ApplicationUI extends UI implements ViewDisplay {
         applicationLayout.setContent(contentPanel);
 
         setContent(applicationLayout);
+
+        openView(TimesheetView.VIEW_URL);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class ApplicationUI extends UI implements ViewDisplay {
         contentPanel.changeView(view);
     }
 
-    public static void navigateTo(String viewName) {
-        ApplicationUI.getCurrent().getNavigator().navigateTo(viewName);
+    public static void openView(String viewName) {
+        WorktimeUI.getCurrent().getNavigator().navigateTo(viewName);
     }
 }

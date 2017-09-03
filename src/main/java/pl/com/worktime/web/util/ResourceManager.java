@@ -1,4 +1,4 @@
-package pl.com.worktime.web.resource;
+package pl.com.worktime.web.util;
 
 import com.vaadin.server.ThemeResource;
 

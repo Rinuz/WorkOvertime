@@ -1,4 +1,4 @@
-package pl.com.worktime.web.main;
+package pl.com.worktime.web.view.main;
 
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Component;
@@ -14,6 +14,7 @@ public class ContentPanel extends Panel {
     public ContentPanel() {
         setContent(new Label("treść"));
         setSizeFull();
+        addStyleName("content-panel");
     }
 
     public void changeView(View view) {

@@ -1,33 +1,54 @@
 package pl.com.worktime.web.view;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import pl.com.worktime.web.model.TimesheetModel;
+import pl.com.worktime.web.presenter.TimesheetPresenter;
+import pl.com.worktime.web.util.Styles;
+import pl.com.worktime.web.util.component.ViewHorizontal;
+import pl.com.worktime.web.view.timesheet.WorkMonthPanel;
+import pl.com.worktime.web.view.timesheet.WorkdayDetailsPanel;
 
-import javax.annotation.PostConstruct;
 
-import static pl.com.worktime.web.view.TimesheetView.VIEW_URL;
+@SpringView(name = TimesheetView.VIEW_URL)
+public class TimesheetView extends ViewHorizontal<TimesheetPresenter> {
 
-/**
- * Radosław Kozdruń
- * 30.08.2017
- */
-@UIScope
-@SpringView(name = VIEW_URL)
-public class TimesheetView extends VerticalLayout implements View {
+    private static final Logger LOG = LoggerFactory.getLogger(TimesheetView.class);
 
     public static final String VIEW_URL = "timesheet";
 
-    @PostConstruct
-    void init() {
-        addComponent(new Label("This is a view scoped view"));
+    private WorkMonthPanel workMonthPanel;
+    private WorkdayDetailsPanel workdayDetailsPanel;
+
+    @Autowired
+    public TimesheetView(TimesheetPresenter presenter) {
+        super(presenter);
     }
 
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
+    public void initLayout() {
+        workMonthPanel = new WorkMonthPanel();
+        workdayDetailsPanel = new WorkdayDetailsPanel();
 
+        addComponent(workMonthPanel);
+        addComponent(workdayDetailsPanel);
+        setExpandRatio(workMonthPanel, 1f);
+    }
+
+    @Override
+    public void initProperties() {
+        setSizeFull();
+        setMargin(true);
+        setSpacing(true);
+        addStyleName(Styles.VIEW_PANEL);
+    }
+
+    public void loadWorkMonthChart(TimesheetModel model) {
+        workMonthPanel.loadChart(model);
+    }
+
+    public void loadWorkMonthSummery(TimesheetModel model) {
     }
 }

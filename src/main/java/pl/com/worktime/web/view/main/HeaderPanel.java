@@ -1,4 +1,4 @@
-package pl.com.worktime.web.main;
+package pl.com.worktime.web.view.main;
 
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;

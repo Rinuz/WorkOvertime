@@ -1,11 +1,14 @@
 package pl.com.worktime.application;
 
+import pl.com.worktime.application.dto.WorkdayDto;
 import pl.com.worktime.domain.Overtime;
 import pl.com.worktime.domain.Workday;
 import pl.com.worktime.domain.Worktime;
 import pl.com.worktime.domain.support.AggregateId;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Radosław Kozdruń
@@ -13,13 +16,15 @@ import java.time.LocalDateTime;
  */
 public interface WorkdayService {
 
-    public Workday createWorkday();
+    List<WorkdayDto> getWorkdays(LocalDate month);
 
-    public Worktime addWorktime(AggregateId workdayId, LocalDateTime startOfWork, LocalDateTime endOfWork);
+    Workday createWorkday();
 
-    public void removeWorktime(AggregateId workdayId, Long worktimeId);
+    Worktime addWorktime(AggregateId workdayId, LocalDateTime startOfWork, LocalDateTime endOfWork);
 
-    public Overtime addOvertime(AggregateId workdayId, LocalDateTime startOfOvertime, LocalDateTime endOfOvertime);
+    void removeWorktime(AggregateId workdayId, Long worktimeId);
 
-    public void removeOvertime(AggregateId workdayId, Long worktimeId);
+    Overtime addOvertime(AggregateId workdayId, LocalDateTime startOfOvertime, LocalDateTime endOfOvertime);
+
+    void removeOvertime(AggregateId workdayId, Long worktimeId);
 }
