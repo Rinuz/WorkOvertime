@@ -1,4 +1,4 @@
-package pl.com.worktime.web.view.timesheet;
+package pl.com.worktime.web.view.timesheet.chart;
 
 import com.vaadin.ui.Label;
 
@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 import static pl.com.worktime.web.util.DateUtil.getHourName;
 
-public class ChartHourLabel extends Label {
+public class ChartAxisX extends Label {
 
-    public ChartHourLabel(LocalDateTime dayTime) {
+    public ChartAxisX(LocalDateTime dayTime) {
         setValue(getLabelValue(dayTime));
 
         addStyleName("workmonth-chart-hour-label");

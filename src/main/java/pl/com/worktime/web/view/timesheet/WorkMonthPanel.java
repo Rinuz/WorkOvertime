@@ -3,15 +3,22 @@ package pl.com.worktime.web.view.timesheet;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import pl.com.worktime.application.dto.OvertimeDto;
 import pl.com.worktime.application.dto.WorkdayDto;
+import pl.com.worktime.application.dto.WorktimeDto;
 import pl.com.worktime.web.model.TimesheetModel;
 import pl.com.worktime.web.util.Styles;
+import pl.com.worktime.web.view.timesheet.chart.ChartAxisX;
+import pl.com.worktime.web.view.timesheet.chart.ChartAxisY;
+import pl.com.worktime.web.view.timesheet.chart.ChartBarForOvertime;
+import pl.com.worktime.web.view.timesheet.chart.ChartBarForWorktime;
+import pl.com.worktime.web.view.timesheet.chart.util.ChartCoordinates;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Optional;
 
-import static pl.com.worktime.web.util.DateUtil.getYearAndMonthName;
+import static pl.com.worktime.web.util.DateUtil.*;
 import static pl.com.worktime.web.util.SizeUtil.setHeightAndMaxWidth;
+import static pl.com.worktime.web.view.timesheet.chart.util.ChartCoordinatesFactory.*;
 
 public class WorkMonthPanel extends VerticalLayout {
 
@@ -44,28 +51,61 @@ public class WorkMonthPanel extends VerticalLayout {
     }
 
     public void loadChart(TimesheetModel model) {
-        monthLabel.setValue(getYearAndMonthName(model.getMonth()));
-
-        chartLayout.setRows(model.getMonthDays() + 2);
-
-        for (int i = 0; i < model.getMonthDays(); i++) {
-            LocalDate day = model.getMonth().plusDays(i);
-            WorkdayDto workday = model.getWorkday(day);
-            addChartRow(day, workday);
-        }
-        addChartFootter(model.getMonthTime());
+        loadChartTitle(model);
+        loadChartAxis(model);
+        loadChartWorktimeBars(model);
+        loadChartOvertimeBars(model);
     }
 
-    private void addChartRow(LocalDate day, WorkdayDto workday) {
-        ChartDayLabel dayLabel = new ChartDayLabel(day);
-        chartLayout.addComponent(dayLabel, 0, day.getDayOfMonth() - 1);
-
+    private void loadChartTitle(TimesheetModel model) {
+        String yearAndMonthText = getYearAndMonthName(model.getMonth());
+        monthLabel.setValue(yearAndMonthText);
     }
 
-    private void addChartFootter(LocalDateTime dayTime) {
-        for (int i = 0; i < 24; i++) {
-            ChartHourLabel hourLabel = new ChartHourLabel(dayTime.plusHours(i+1));
-            chartLayout.addComponent(hourLabel, i + 1, chartLayout.getRows() - 2, i + 1, chartLayout.getRows() - 2);
-        }
+    private void loadChartAxis(TimesheetModel model) {
+        chartLayout.setRows(maxRowNumbers(model));
+
+        //axis X (hours of day)
+        iterateOverHoursOfTheDay(hourTime -> {
+            if (hourTime.getHour() == 0) {
+                return;
+            }
+            ChartAxisX hourLabel = new ChartAxisX(hourTime);
+            ChartCoordinates coordinates = createAxisXCoordinates(hourTime, model);
+            chartLayout.addComponent(hourLabel, coordinates.getStartColumn(), coordinates.getStartRow(), coordinates.getEndColumn(), coordinates.getEndRow());
+        });
+
+        //axis y (days of month)
+        iterateOverDaysOfMonth(model.getMonth(), day -> {
+            ChartAxisY dayLabel = new ChartAxisY(day);
+            ChartCoordinates coordinates = createAxisYCoordinates(day);
+            chartLayout.addComponent(dayLabel, coordinates.getStartColumn(), coordinates.getStartRow(), coordinates.getEndColumn(), coordinates.getEndRow());
+        });
+    }
+
+    private void loadChartWorktimeBars(TimesheetModel model) {
+        iterateOverDaysOfMonth(model.getMonth(), day -> {
+            Optional<WorkdayDto> workdayOptional = model.getWorkday(day);
+            if (workdayOptional.isPresent() && workdayOptional.get().hasWorktimes()) {
+                for (WorktimeDto worktime : workdayOptional.get().getWorktimes()) {
+                    ChartBarForWorktime bar = new ChartBarForWorktime(worktime);
+                    ChartCoordinates coordinates = createBarCoordinates(worktime);
+                    chartLayout.addComponent(bar, coordinates.getStartColumn(), coordinates.getStartRow(), coordinates.getEndColumn(), coordinates.getEndRow());
+                }
+            }
+        });
+    }
+
+    private void loadChartOvertimeBars(TimesheetModel model) {
+        iterateOverDaysOfMonth(model.getMonth(), day -> {
+            Optional<WorkdayDto> workdayOptional = model.getWorkday(day);
+            if (workdayOptional.isPresent() && workdayOptional.get().hasOvertimes()) {
+                for (OvertimeDto overtime : workdayOptional.get().getOvertimes()) {
+                    ChartBarForOvertime bar = new ChartBarForOvertime(overtime);
+                    ChartCoordinates coordinates = createBarCoordinates(overtime);
+                    chartLayout.addComponent(bar, coordinates.getStartColumn(), coordinates.getStartRow(), coordinates.getEndColumn(), coordinates.getEndRow());
+                }
+            }
+        });
     }
 }

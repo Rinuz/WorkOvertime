@@ -72,4 +72,12 @@ public class WorkdayDto {
     public void setOvertimes(Set<OvertimeDto> overtimes) {
         this.overtimes = overtimes;
     }
+
+    public boolean hasWorktimes() {
+        return worktimes != null && worktimes.size() > 0;
+    }
+
+    public boolean hasOvertimes() {
+        return overtimes != null && overtimes.size() > 0;
+    }
 }

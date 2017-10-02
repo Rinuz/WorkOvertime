@@ -78,13 +78,13 @@ public class WorkdayServiceImpl implements WorkdayService {
         workdays.add(workday(firstDayOfMonth.plusDays(4), 8, 16, null, null, PresenceType.PRESENT)); //piatek
         workdays.add(workday(firstDayOfMonth.plusDays(5), null, null, 12, 15, PresenceType.HOLIDAY)); //sobota
         //---------------------------------------------------------------------------------------------------------------------- //niedziela
-        workdays.add(workday(firstDayOfMonth.plusDays(7), 8, 16, null, null, PresenceType.PRESENT));//poniedzialek
-        workdays.add(workday(firstDayOfMonth.plusDays(8), 8, 16, null, null, PresenceType.PRESENT)); //wtorek
+        workdays.add(workday(firstDayOfMonth.plusDays(7), 7, 14, null, null, PresenceType.PRESENT));//poniedzialek
+        workdays.add(workday(firstDayOfMonth.plusDays(8), 8, 18, null, null, PresenceType.PRESENT)); //wtorek
         workdays.add(workday(firstDayOfMonth.plusDays(8), 8, 16, 20, 22, PresenceType.PRESENT)); //sroda
         workdays.add(workday(firstDayOfMonth.plusDays(9), 8, 16, null, null, PresenceType.PRESENT)); //czwartek
         workdays.add(workday(firstDayOfMonth.plusDays(10), 8, 16, null, null, PresenceType.PRESENT));//piatek
-        workdays.add(workday(firstDayOfMonth.plusDays(1), 8, 16, null, null, PresenceType.PRESENT)); //poniedzialek
-        workdays.add(workday(firstDayOfMonth.plusDays(1), 8, 16, 17, 21, PresenceType.PRESENT)); //wtorek
+        workdays.add(workday(firstDayOfMonth.plusDays(13), 8, 16, null, null, PresenceType.PRESENT)); //poniedzialek
+        workdays.add(workday(firstDayOfMonth.plusDays(14), 6, 14, 17, 21, PresenceType.PRESENT)); //wtorek
 
 
         return workdays;
@@ -102,6 +102,7 @@ public class WorkdayServiceImpl implements WorkdayService {
             WorktimeDto worktime = new WorktimeDto();
             worktime.setStartOfWork(date.atTime(startWorktime, 0, 0));
             worktime.setEndOfWork(date.atTime(endWorktime, 0, 0));
+            worktime.setWorkday(workdayDto);
             workdayDto.setWorktimes(newHashSet(worktime));
         }
 
@@ -109,6 +110,7 @@ public class WorkdayServiceImpl implements WorkdayService {
             OvertimeDto overtime = new OvertimeDto();
             overtime.setStartOfWork(date.atTime(startOvertime, 0, 0));
             overtime.setEndOfWork(date.atTime(endOvertime, 0, 0));
+            overtime.setWorkday(workdayDto);
             workdayDto.setOvertimes(newHashSet(overtime));
         }
         return workdayDto;
